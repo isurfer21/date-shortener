@@ -44,8 +44,8 @@ fn main() {
     
     if matches.opt_present("t") {
         let local: DateTime<Local> = Local::now();
-            let dmy = to_date36(local.day(), local.month(), local.year(), explain_flag);
-            println!("{}", dmy);
+        let dmy = to_date36(local.day(), local.month(), local.year(), explain_flag);
+        println!("{}", dmy);
     }
 
     let date = matches.opt_str("d");
@@ -66,7 +66,7 @@ fn main() {
     match code {
         Some(code) => {
             let dmy = to_date_str(code, explain_flag);
-                    println!("{}", dmy);
+            println!("{}", dmy);
         },
         None => do_nothing(),
     }
