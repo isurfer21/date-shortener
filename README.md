@@ -4,7 +4,7 @@ A tool to shorten (encode) the date and expand (decode) shortened date back to o
 ## Introduction
 I have developed a new way to encode/decode dates within 3 characters by using base-36 format.
 
-### What is a base 36 format?
+#### What is a base 36 format?
 
 > Base 36 or hexatridecimal is a positional numeral system using 36 as the radix. The choice of 36 is convenient in that the digits can be represented using the Arabic numerals 0-9 and the Latin letters A-Z.
 
@@ -96,3 +96,5 @@ $ cd date-shortener
 $ cargo build --release
 $ ./target/release/ds -h
 ```
+## References
+- [Encode or decode date in 3 characters](http://akzcool.blogspot.com/2019/10/encode-or-decode-in-3-characters.html)
