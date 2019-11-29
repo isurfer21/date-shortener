@@ -46,7 +46,7 @@ Find out all the available command options & flags
 $ ds -h
 Date Shortener is a tool to shorten (encode) the date and expand (decode) shortened date back to original date. 
 
-Usage: ./target/release/ds [flag] [options]
+Usage: ds [flag] [options]
 
 Options:
     -d, --date DD-MM-YYYY
