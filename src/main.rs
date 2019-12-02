@@ -5,8 +5,31 @@ use getopts::Options;
 use chrono::prelude::*;
 use std::env;
 
-const BASE36_CHARSET: &str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const VERSION: &str = "0.1.0";
+mod endec;
+
+const VERSION: &str = "0.2.0";
+
+const L10N_APPVER: &str = "
+Date Shortener
+Version [VER]
+Licensed under MIT License
+";
+
+const L10N_APPINFO: &str = "
+Date Shortener 
+It is a tool to shorten (encode) the date and expand (decode) shortened date back to original date.
+";
+
+const L10N_APPCLIEX: &str = "
+Examples: 
+ $ ds -v 
+ $ ds -t 
+ $ ds -t -s 
+ $ ds -e 15/08/19 
+ $ ds -e 15/08/2019 -s 
+ $ ds -d f8j 
+ $ ds -d f8kj -s 
+";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -14,11 +37,11 @@ fn main() {
 
     let mut opts = Options::new();
     
-    opts.optopt("d", "date", "encode the provided date", "DD-MM-YYYY");
-    opts.optopt("c", "code", "decode the provided code", "DMY");
+    opts.optopt("e", "encode", "encode the provided date", "DD-MM-YYYY");
+    opts.optopt("d", "decode", "decode the provided code", "DMY");
 
     opts.optflag("t", "today", "encode today's date");
-    opts.optflag("e", "explain", "explain with steps");
+    opts.optflag("s", "steps", "show with steps");
     opts.optflag("h", "help", "display the help menu");
     opts.optflag("v", "version", "display the application version");
     
@@ -33,27 +56,27 @@ fn main() {
     }
 
     if matches.opt_present("v") {
-        println!("Date Shortener \nVersion {} \nLicensed under MIT License", VERSION);
+        println!("{}", L10N_APPVER.replace("[VER]", VERSION));
         return;
     }
 
-    let mut explain_flag = false;
-    if matches.opt_present("e") {
-        explain_flag = true;
+    let mut steps_flag = false;
+    if matches.opt_present("s") {
+        steps_flag = true;
     }
     
     if matches.opt_present("t") {
         let local: DateTime<Local> = Local::now();
-        let dmy = to_date36(local.day(), local.month(), local.year(), explain_flag);
+        let dmy = endec::encode(local.day(), local.month(), local.year(), steps_flag);
         println!("{}", dmy);
     }
 
-    let date = matches.opt_str("d");
+    let date = matches.opt_str("e");
     match date {
         Some(date) => {
                 let tmp: Vec<&str> = date.split([',', '.', '-', '/'].as_ref()).collect();
                 if tmp.len() == 3 {
-                    let dmy = to_date36(tmp[0].parse().unwrap(), tmp[1].parse().unwrap(), tmp[2].parse().unwrap(), explain_flag);
+                    let dmy = endec::encode(tmp[0].parse().unwrap(), tmp[1].parse().unwrap(), tmp[2].parse().unwrap(), steps_flag);
                     println!("{}", dmy);
                 } else {
                     println!("Invalid date: {:?}", date);
@@ -62,10 +85,10 @@ fn main() {
         None => do_nothing(),
     }
 
-    let code = matches.opt_str("c");
+    let code = matches.opt_str("d");
     match code {
         Some(code) => {
-            let dmy = to_date_str(code, explain_flag);
+            let dmy = endec::decode(code, steps_flag);
             println!("{}", dmy);
         },
         None => do_nothing(),
@@ -75,31 +98,8 @@ fn main() {
 fn do_nothing() {}
 
 fn print_usage(program: &str, opts: Options) {
-    println!("Date Shortener is a tool to shorten (encode) the date and expand (decode) shortened date back to original date. \n");
+    println!("{}", L10N_APPINFO);
     let brief = format!("Usage: {} [flag] [options]", program);
     print!("{}", opts.usage(&brief));
-    println!("\nExamples: \n $ ds -v \n $ ds -t \n $ ds -t -e \n $ ds -d 15/08/2019 \n $ ds -d 15/08/2019 -e \n $ ds -c f8j \n $ ds -c f8j -e \n");
-}
-
-fn to_date36(day:u32, month:u32, long_year:i32, explain:bool) -> String {
-    let symbols: Vec<char> = BASE36_CHARSET.chars().collect();
-    let short_year = long_year % 100;
-    let d36 = symbols[(day % 36) as usize];
-    let m36 = symbols[(month % 36) as usize];
-    let y36 = symbols[(short_year % 36) as usize];
-    let dmy = format!("{}{}{}", d36, m36, y36).to_ascii_lowercase();
-    let dmy_explained = format!("{}-{}-{} -> {}.{}.{} -> {}.{}.{} -> {}", day, month, long_year, day, month, short_year, d36, m36, y36, dmy);
-    return if explain { dmy_explained } else { dmy };
-}
-
-fn to_date_str(date36:String, explain: bool) -> String {
-    let date36_uc = date36.to_ascii_uppercase();
-    let date_sym: Vec<char> = date36_uc.chars().collect();
-    let day = BASE36_CHARSET.find(date_sym[0]).unwrap();
-    let month = BASE36_CHARSET.find(date_sym[1]).unwrap();
-    let short_year = BASE36_CHARSET.find(date_sym[2]).unwrap();
-    let long_year = short_year as i32 + 2000;
-    let dmy = format!("{}-{}-{}", day, month, long_year);
-    let dmy_explained = format!("{} -> {}.{}.{} -> {}.{}.{} -> {}", date36, date_sym[0], date_sym[1], date_sym[2], day, month, short_year, dmy);
-    return if explain { dmy_explained } else { dmy };
+    println!("{}", L10N_APPCLIEX);
 }
