@@ -1,0 +1,20 @@
+[package]
+name = "isurfer21/date-shortener"
+version = "0.2.1"
+description = "A tool to shorten (encode) the date and expand (decode) shortened date back to original date"
+license = "MIT"
+repository = "https://github.com/isurfer21/date-shortener"
+
+[dependencies]
+
+[[module]]
+name = "ds"
+source = "target/wasm32-wasi/release/ds.wasm"
+abi = "wasi"
+
+[module.interfaces]
+wasi = "0.0.0-unstable"
+
+[[command]]
+name = "ds"
+module = "ds"

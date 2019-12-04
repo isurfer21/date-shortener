@@ -7,11 +7,12 @@ use std::env;
 
 mod endec;
 
-const VERSION: &str = "0.2.0";
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 const L10N_APPVER: &str = "
 Date Shortener
 Version [VER]
+Copyright (c) Abhishek Kumar 2019
 Licensed under MIT License
 ";
 
