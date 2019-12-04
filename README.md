@@ -75,23 +75,70 @@ Licensed under MIT License
 ```
 
 ## Development
-To generate the build and run these commands
+To generate the builds for all platforms at once, run this
 
-### Debug build
+```
+$ sh builder.sh
+```
+
+Otherwise, to generate the build for particular platform and run below commands
+
+### Binaries
+Create desktop builds that could run on shell.
+
+#### Debug build
 
 ```
 $ cd date-shortener
 $ cargo build
-$ $ ./target/debug/ds -h
+$ ./target/debug/ds -h
 ```
 
-### Release build
+#### Release build
 
 ```
 $ cd date-shortener
 $ cargo build --release
 $ ./target/release/ds -h
 ```
+
+### WASI/WAPM
+Create WASM file that could run using 
+
+- [Wasmer.io](https://wasmer.io/) runtime WAPM on shell 
+- [WebAssembly.sh](https://webassembly.sh/) on web
+
+In order to build it, we first need to install a WASI-enabled Rust toolchain:
+
+```
+$ rustup target add wasm32-wasi
+```
+
+#### Debug build
+
+```
+$ cd date-shortener
+$ cargo build --target wasm32-wasi
+$ file ./target/wasm32-wasi/debug/ds.wasm
+$ wapm run ds -v
+```
+
+#### Release build
+
+```
+$ cd date-shortener
+$ cargo build --target wasm32-wasi --release
+$ file ./target/wasm32-wasi/release/ds.wasm
+$ wapm run ds -v
+```
+
+Note: `wapm` runtime reserves these flags, so these gets override if app have it as well.
+```
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+```
+
+Although, `WebAssembly.sh` doesn't override any command or flag; where the `ds` commands can be used straight-forward.
 
 ## References
 - [Encode or decode date in 3 characters](http://akzcool.blogspot.com/2019/10/encode-or-decode-in-3-characters.html)
