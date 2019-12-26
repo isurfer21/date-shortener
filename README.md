@@ -2,21 +2,25 @@
 A tool to shorten (encode) the date and expand (decode) shortened date back to original date
 
 ## Introduction
-I have developed a new way to encode/decode dates within 3 or 4 characters by using base-99 format.
+I have developed a new way to encode/decode dates within 3 or 4 characters by using base99 format.
 
-#### What is a base 99 format?
+#### What is a base99 format?
 
-In simple language, base-99 format refers to series of 0-9 followed by small & capital A-Z characters and variations of vowel characters, i.e., 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚâêîôûÂÊÔÛÎäëïöüÄËÏ; where each character refers to the position index in series.
+In simple language, base99 format refers to series of 0-9 followed by small & capital A-Z characters and variations of vowel characters, i.e., `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚâêîôûÂÊÔÛÎäëïöüÄËÏ`; where each character refers to the position index in series.
 
-e.g., `12 → C, 19 → J, 34 → Y`
+Using this format, any number in between 0-99 can be represented by a character positioned in base99 sequence 
+
+e.g., `12 → c, 19 → j, 34 → y`
+
+where, `c` is placed at 12th position in the sequence, `j` at 19th while `y` at 34th.
 
 Now here is a way to use the same logic for date, so to do that let us take a date and encode it as
 
-`15-8-2019 -> 15.8.2019 -> f.8.kj -> f8kj`
+`15-8-2019 → 15.8.2019 → f.8.kj → f8kj`
 
 Similarly, decode it back as
 
-`f8kj -> f.8.kj -> 15.8.2019 -> 15-8-2019`
+`f8kj → f.8.kj → 15.8.2019 → 15-8-2019`
 
 ## Usage
 Open the application in terminal & run the required commands as shown below
