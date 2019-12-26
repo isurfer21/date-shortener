@@ -2,10 +2,16 @@
 A tool to shorten (encode) the date and expand (decode) shortened date back to original date
 
 ## Introduction
-I have developed a new way to encode/decode dates within 3 or 4 characters by using base99 format.
+Actually, I have developed a new way to encode/decode dates within 3 or 4 characters by using base-99 format. So here, we are going to learn about the logic behind this utility tool and reason of it's creation.
+
+#### Why did I created it?
+Actually, while sharing the files across organisation I would have to maintain version numbers in the filename but those versions won't tell anything about the last updation date until I check when was it last updated. So to maintain the updation dates in the filename, I had started adding timestamp in the filename which solved my issue but looks bad and it also increases the length of the filename. 
+
+So I was searching ways to reduce the timestamp, at least the date portion to short string may be having only few characters but can tell the date. Initially, I got an idea of using base36 format instead of date and month because maximum date will be 31 which is less than 36; similary maximum month is 12 that is under 36 too. Well that solves my day-to-day problem but when I applied the same logic to years then it was limited to 36 years only. Then, I thought of using base64 format but that is also limited upto 64 years. 
+
+Since I was looking for universal date conversion, so I would require something like base99 format. I looked over the Internet but I didn't found anything like that. So I made it by my own.
 
 #### What is a base99 format?
-
 In simple language, base99 format refers to series of 0-9 followed by small & capital A-Z characters and variations of vowel characters, i.e., `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚâêîôûÂÊÔÛÎäëïöüÄËÏ`; where each character refers to the position index in series.
 
 Using this format, any number in between 0-99 can be represented by a character positioned in base99 sequence 
